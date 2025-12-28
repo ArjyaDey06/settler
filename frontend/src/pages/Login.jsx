@@ -20,7 +20,7 @@ function Login() {
         uid: result.user.uid,
       });
 
-      navigate("/phone");
+      navigate("/dashboard");
     } catch (error) {
       console.log(error);
     }
@@ -29,7 +29,7 @@ function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6 sm:p-8">
-        
+
         {/* Title */}
         <h2 className="text-2xl font-bold text-center mb-6">
           Welcome Back

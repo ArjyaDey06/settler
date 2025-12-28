@@ -18,7 +18,7 @@ function Register() {
         uid: result.user.uid,
       });
 
-      navigate("/phone");
+      navigate("/dashboard");
     } catch (error) {
       console.log(error);
     }
