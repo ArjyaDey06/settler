@@ -18,7 +18,7 @@ function Register() {
         uid: result.user.uid,
       });
 
-      navigate("/dashboard");
+      navigate("/Landing");
     } catch (error) {
       console.log(error);
     }
