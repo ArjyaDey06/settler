@@ -20,7 +20,7 @@ function Login() {
         uid: result.user.uid,
       });
 
-      navigate("/dashboard");
+      navigate("/landing");
     } catch (error) {
       console.log(error);
     }
