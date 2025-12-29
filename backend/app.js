@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import connectDB from "./config/db.js";
 
 // Routes
 import authRoutes from "./routes/auth.js";
@@ -15,9 +16,13 @@ const app = express();
 /* =====================
    Global Middleware
 ===================== */
+
+//mongodb connection
+connectDB();
+
 app.use(
     cors({
-        origin: "http://localhost:5173", // Vite frontend
+        origin: "http://localhost:5173", // frontend
         credentials: true
     })
 );
@@ -35,7 +40,7 @@ app.use("/api/tenant", tenantRoutes);
    Health Check
 ===================== */
 app.get("/", (req, res) => {
-    res.send("🚀 Settlr API is running");
+    res.send(" Settlr API is running");
 });
 
 /* =====================
@@ -43,14 +48,7 @@ app.get("/", (req, res) => {
 ===================== */
 const PORT = process.env.PORT || 5000;
 
-mongoose
-    .connect(process.env.MONGO_URI)
-    .then(() => {
-        console.log("✅ MongoDB connected");
-        app.listen(PORT, () =>
-            console.log(`🚀 Server running on port ${PORT}`)
-        );
-    })
-    .catch((error) => {
-        console.error("❌ MongoDB connection failed:", error.message);
-    });
+app.listen(PORT, () =>
+    console.log(`Server running on ${PORT}`)
+);
+
