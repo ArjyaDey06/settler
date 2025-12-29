@@ -12,29 +12,35 @@ const verifyFirebaseToken = async (req, res, next) => {
         const token = authHeader.split(" ")[1];
         const decoded = await admin.auth().verifyIdToken(token);
 
+        if (!decoded.uid) {
+            return res.status(401).json({ message: "Invalid Firebase token" });
+        }
+
         let user = await User.findOne({ firebaseUid: decoded.uid });
 
         if (!user) {
             user = await User.create({
                 firebaseUid: decoded.uid,
-                name: decoded.name,
+                name: decoded.name || "User",
                 email: decoded.email,
-                profilePic: decoded.picture
+                profilePic: decoded.picture || null
             });
         }
 
         req.user = {
             mongoId: user._id,
-            firebaseUid: decoded.uid,
+            firebaseUid: user.firebaseUid,
             name: user.name,
             email: user.email,
             phone: user.phone || null,
-            role: user.role
+            role: user.role || "tenant"
         };
+
+        console.log("Decoded Firebase User:", decoded);
 
         next();
     } catch (error) {
-        console.error("Auth middleware error:", error.message);
+        console.error("Auth error:", error.message);
         res.status(401).json({ message: "Unauthorized" });
     }
 };
