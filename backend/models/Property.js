@@ -21,6 +21,18 @@ const propertySchema = new mongoose.Schema(
     city: String,
     address: String,
 
+    location: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        default: "Point"
+      },
+      coordinates: {
+        type: [Number], // [longitude, latitude]
+        default: [0, 0]
+      }
+    },
+
     propertyDetails: {
       roomType: String,
       furnishing: {
@@ -92,5 +104,8 @@ const propertySchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// 🌍 2dsphere index for nearby search (ADDED)
+propertySchema.index({ location: "2dsphere" });
 
 export default mongoose.model("Property", propertySchema);
